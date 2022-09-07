@@ -1,0 +1,57 @@
+name: Publish iOS and Android App to App Store and Play Store
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+# realse ios removed until ready
+  release-android:
+    name: Build and release Android app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "2.x"
+
+      - name: Write .env
+        shell: bash
+        run: |
+          echo "$DOTENV_B64" | base64 --decode > .env
+        env:
+          DOTENV_B64: ${{ secrets.DOTENV_B64 }}
+
+          - name: Write Google Cloud API Key
+        shell: bash
+        run: |
+          echo "$GOOGLE_CLOUD_API_KEY_B64" | base64 --decode > android/google-cloud-api-key.json
+        env:
+          GOOGLE_CLOUD_API_KEY_B64: ${{ secrets.GOOGLE_CLOUD_API_KEY_B64 }}
+
+      - name: Write key properties
+        shell: bash
+        run: |
+          echo "$KEY_PROPERTIES_B64" | base64 --decode > android/key.properties
+        env:
+          KEY_PROPERTIES_B64: ${{ secrets.KEY_PROPERTIES_B64 }}
+
+      - name: Write key store
+        shell: bash
+        run: |
+          mkdir android/keystore
+          echo "$KEYSTORE_B64" | base64 --decode > android/keystore/my-upload-key.jks
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+
+      - name: Install Fastlane
+        run: cd android && bundle install && cd ..
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Execute Fastlane command
+        run: cd android && fastlane internal
