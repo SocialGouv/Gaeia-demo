@@ -25,7 +25,7 @@ jobs:
         env:
           DOTENV_B64: ${{ secrets.DOTENV_B64 }}
 
-          - name: Write Google Cloud API Key
+      - name: Write Google Cloud API Key
         shell: bash
         run: |
           echo "$GOOGLE_CLOUD_API_KEY_B64" | base64 --decode > android/google-cloud-api-key.json
