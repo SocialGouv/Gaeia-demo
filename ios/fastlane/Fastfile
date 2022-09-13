@@ -36,7 +36,10 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     build_app(workspace: "Gaeia-demo.xcworkspace", scheme: "Gaeia-demo")
-    upload_to_testflight(api_key_path: "fastlane/appleApiKey.json")
+    upload_to_testflight(
+      api_key_path: "fastlane/appleApiKey.json",
+      skip_waiting_for_build_processing: true
+    )
   end
 
   desc "Push a new beta build to TestFlight via github actions"
@@ -69,7 +72,10 @@ platform :ios do
     )
 
     build_app(workspace: "Gaeia-demo.xcworkspace", scheme: "Gaeia-demo")
-    upload_to_testflight(api_key_path: "fastlane/appleApiKey.json")
+    upload_to_testflight(
+      api_key_path: "fastlane/appleApiKey.json",
+      skip_waiting_for_build_processing: true
+    )
   end
 
 end
