@@ -73,6 +73,7 @@ appleApiKey.json
 *.p8
 *.p12
 **/Gemfile.lock
+ios/tmp.xcconfig
 
 # ENV
 .env
