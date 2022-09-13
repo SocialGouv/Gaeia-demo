@@ -148,8 +148,8 @@ android {
         applicationId project.env.get("ANDROID_PACKAGE_NAME")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.0.11"
+        versionCode 17
+        versionName "1.0.12"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {

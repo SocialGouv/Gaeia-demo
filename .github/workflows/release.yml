@@ -29,12 +29,13 @@ jobs:
           node-version: "16.x"
           cache: 'yarn'
 
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "2.x"
           bundler-cache: true
       
-      - uses: actions/cache@v3
+      - name: Cache CocoaPods packages
+        uses: actions/cache@v3
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -87,12 +88,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
 
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "2.x"
           bundler-cache: true
 
-      - uses: actions/cache@v3
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
