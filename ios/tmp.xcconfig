@@ -1,3 +1,6 @@
 APP_DISPLAY_NAME=GAEIA-demo
 ANDROID_PACKAGE_NAME=com.gaeia.test.fastlane
 IOS_BUNDLE_IDENTIFIER=com.gaeia.test.fastlane
+IOS_APPLE_ID=g.feybesse@gmail.com #your apple ID
+IOS_ITC_TEAM_ID=125569262 #your itc_team_id
+IOS_TEAM_ID=YG4ZMNFZWJ #your team_id

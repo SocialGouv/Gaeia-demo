@@ -1,6 +1,6 @@
 {
   "name": "Gaeia-demo",
-  "version": "0.0.1",
+  "version": "1.0.9",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "IncrementBuildNumber": "cd ios && fastlane IncrementBuildNumber && cd ../android && fastlane IncrementBuildNumber"
+    "incrementBuildNumber": "cd ios && fastlane IncrementBuildNumber && cd ../android && fastlane IncrementBuildNumber",
+    "setVersiondNameToMatchPackageJson": "cd ios && fastlane SetVersiondNameToMatchPackageJson version_name:${npm_package_version} && cd ../android && fastlane SetVersiondNameToMatchPackageJson version_name:${npm_package_version}"
   },
   "dependencies": {
     "react": "18.0.0",

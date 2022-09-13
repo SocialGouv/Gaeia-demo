@@ -16,14 +16,60 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Push a new beta build to TestFlight"
-  lane :IncrementBuildNumber do |options|
+  desc "Auto Increment BuildNumber"
+  lane :IncrementBuildNumber do
     increment_build_number(xcodeproj: "Gaeia-demo.xcodeproj")
   end
 
+  desc "Set version number"
+  lane :SetVersiondNameToMatchPackageJson do |options|
+    if options[:version_name]
+      # extract options to a variable
+      version_name = options[:version_name]
+      increment_version_number(
+        version_number: version_name # Set a specific version number
+      )
+    end
+
+  end
+
   desc "Push a new beta build to TestFlight"
-  lane :beta do |options|
+  lane :beta do
     build_app(workspace: "Gaeia-demo.xcworkspace", scheme: "Gaeia-demo")
     upload_to_testflight(api_key_path: "fastlane/appleApiKey.json")
   end
+
+  desc "Push a new beta build to TestFlight via github actions"
+  lane :betaGithub do |options|
+    if options[:certificate_password]
+      # extract options to a variable
+      certificate_password = options[:certificate_password]
+    end
+
+    create_keychain(
+      name: 'ios_app_keychain',
+      password: certificate_password,
+      timeout: 1800,
+      default_keychain: true,
+      unlock: true,
+      lock_when_sleeps: false
+    )
+    import_certificate(
+      certificate_path: 'distribution.p12',
+      certificate_password: certificate_password,
+      keychain_name: 'ios_app_keychain',
+      keychain_password: certificate_password
+    )
+    install_provisioning_profile(path: 'distribution.mobileprovision')
+    update_project_provisioning(
+      xcodeproj: 'Gaeia-demo.xcodeproj',
+      target_filter: 'github',
+      profile: 'distribution.mobileprovision',
+      build_configuration: 'Release'
+    )
+
+    build_app(workspace: "Gaeia-demo.xcworkspace", scheme: "Gaeia-demo")
+    upload_to_testflight(api_key_path: "fastlane/appleApiKey.json")
+  end
+
 end

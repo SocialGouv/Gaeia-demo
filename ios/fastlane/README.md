@@ -21,7 +21,15 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane ios IncrementBuildNumber
 ```
 
-Push a new beta build to TestFlight
+Auto Increment BuildNumber
+
+### ios SetVersiondNameToMatchPackageJson
+
+```sh
+[bundle exec] fastlane ios SetVersiondNameToMatchPackageJson
+```
+
+Set version number
 
 ### ios beta
 
@@ -30,6 +38,14 @@ Push a new beta build to TestFlight
 ```
 
 Push a new beta build to TestFlight
+
+### ios betaGithub
+
+```sh
+[bundle exec] fastlane ios betaGithub
+```
+
+Push a new beta build to TestFlight via github actions
 
 ----
 

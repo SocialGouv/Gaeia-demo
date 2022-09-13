@@ -15,19 +15,6 @@
 
 default_platform(:android)
 
-# exemple a of a function declaration using options
-# options are set this way : fastlane beta version:patch
-def updateVersion(options)
-  # a place to manage different version update 
-  # if options contain version as for exemple : major, minor, patch
-  if options[:version]
-    # extract options to a variable
-    version_type = options[:version]
-
-  end
-
-end
-
 platform :android do
   desc "Auto increment build number"
   lane :IncrementBuildNumber do
@@ -43,14 +30,25 @@ platform :android do
 
   end
 
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
+  desc "Set version name"
+  lane :SetVersiondNameToMatchPackageJson do |options|
+
+    if options[:version_name]
+      # extract options to a variable
+      version_name = options[:version_name]
+      path = '../app/build.gradle'
+      re = /versionName\s+("\d+.\d+.\d+")/
+      s = File.read(path)
+      s[re, 1] = "\"#{version_name}\""
+      f = File.new(path, 'w')
+      f.write(s)
+      f.close
+    end
+
   end
 
   desc "Submit a new Beta Build to internal"
-  lane :internal do |options|
-    updateVersion(options)
+  lane :internal do 
 
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
@@ -64,8 +62,7 @@ platform :android do
   end
 
   desc "Submit a new Beta Build to alpha"
-  lane :alpha do |options|
-    updateVersion(options)
+  lane :alpha do 
 
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
@@ -79,8 +76,7 @@ platform :android do
   end
 
   desc "Submit a new Beta Build to beta"
-  lane :beta do |options|
-    updateVersion(options)
+  lane :beta do 
 
     gradle(task: "clean bundleRelease")
     upload_to_play_store(
@@ -94,8 +90,7 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play"
-  lane :release do |options|
-    updateVersion(options)
+  lane :release do 
 
     gradle(task: "clean bundleRelease")
     upload_to_play_store(

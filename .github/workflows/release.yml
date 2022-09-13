@@ -12,9 +12,53 @@ env:
   KEY_PROPERTIES_B64: ${{ secrets.KEY_PROPERTIES_B64 }}
   KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
   # ios env :
+  APPLE_API_KEY_SETTINGS_B64: ${{ secrets.APPLE_API_KEY_SETTINGS_B64 }}
+  DISTRIBUTION_P12_B64: ${{ secrets.DISTRIBUTION_P12_B64 }}
+  DISTRIBUTION_P12_PASSWORD: ${{ secrets.DISTRIBUTION_P12_PASSWORD }}
+  DISTRIBUTION_MOBILE_PROVISION_B64: ${{ secrets.DISTRIBUTION_MOBILE_PROVISION_B64 }}
 
 
 jobs:
+  release-ios:
+    name: Build and release Ios app
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "2.x"
+
+      - name: Write Apple API Key config
+        shell: bash
+        run: |
+          echo "$APPLE_API_KEY_SETTINGS_B64" | base64 --decode > ios/fastlane/appleApiKey.json
+
+      - name: Write distribution.p12 file
+        shell: bash
+        run: |
+          echo "$DISTRIBUTION_P12_B64" | base64 --decode > ios/distribution.p12
+      
+      - name: Write distribution.mobileprovision file
+        shell: bash
+        run: |
+          echo "$DISTRIBUTION_MOBILE_PROVISION_B64" | base64 --decode > ios/distribution.mobileprovision
+
+      - name: Install Fastlane
+        run: cd ios && bundle install && cd ..
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Install pods
+        run: cd ios && pod install && cd ..
+
+      - name: Execute Fastlane command
+        run: cd ios && fastlane betaGithub certificate_password:$DISTRIBUTION_P12_PASSWORD
+
   release-android:
     name: Build and release Android app
     runs-on: ubuntu-latest

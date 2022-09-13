@@ -42,8 +42,6 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
-*.jks
-*.p8
 
 !debug.keystore
 
@@ -66,10 +64,15 @@ buck-out/
 /ios/Pods/
 /vendor/bundle/
 
-# fastlane
+# fastlane android
 android/google-cloud-api-key.json
 android/key.properties
 appleApiKey.json
+# fastlane ios
+*.jks
+*.p8
+*.p12
+**/Gemfile.lock
 
 # ENV
 .env
