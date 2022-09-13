@@ -21,6 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 ios/.xcode.env.local
+*.app.dSYM.zip
 
 # Android/IntelliJ
 #
@@ -42,6 +43,8 @@ buck-out/
 \.buckd/
 *.keystore
 *.jks
+*.p8
+
 !debug.keystore
 
 # fastlane
@@ -66,6 +69,7 @@ buck-out/
 # fastlane
 android/google-cloud-api-key.json
 android/key.properties
+appleApiKey.json
 
 # ENV
 .env

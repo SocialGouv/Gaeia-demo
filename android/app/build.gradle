@@ -148,7 +148,7 @@ android {
         applicationId project.env.get("ANDROID_PACKAGE_NAME")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
+        versionCode 10
         versionName "1.0.7"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
@@ -168,7 +168,7 @@ android {
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
                     // src/main/jni/Android.mk file for the `LOCAL_MODULE` variable.
-                    targets "fltest_appmodules"
+                    targets "Gaeia-demo_appmodules"
                 }
             }
             if (!enableSeparateBuildPerCPUArchitecture) {
