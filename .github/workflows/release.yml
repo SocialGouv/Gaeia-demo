@@ -55,7 +55,7 @@ jobs:
       - name: Write key store
         shell: bash
         run: |
-          mkdir android/keystore
+          mkdir android/app/keystore
           echo "$KEYSTORE_B64" | base64 --decode > android/app/keystore/my-upload-key.jks
 
       - name: Install Fastlane
