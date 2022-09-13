@@ -24,13 +24,22 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: "14.x"
+          node-version: "16.x"
+          cache: 'yarn'
 
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: "2.x"
+          bundler-cache: true
+      
+      - uses: actions/cache@v3
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
       - name: Write Apple API Key config
         shell: bash
@@ -64,9 +73,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: "14.x"
+          node-version: "16.x"
+          cache: 'yarn'
 
       - name: Setup JDK 11
         uses: actions/setup-java@v2
@@ -80,6 +90,16 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: "2.x"
+          bundler-cache: true
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Write .env
         shell: bash
