@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/SocialGouv/Gaeia-demo/compare/v1.0.1...v1.0.2) (2022-09-14)
+
+
+### Bug Fixes
+
+* release ([2b00403](https://github.com/SocialGouv/Gaeia-demo/commit/2b004037343ebfa51e4f5d1538003ffe81737770))
+
 ## [1.0.1](https://github.com/SocialGouv/Gaeia-demo/compare/v1.0.0...v1.0.1) (2022-09-14)
 
 
