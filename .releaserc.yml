@@ -7,8 +7,8 @@ plugins:
     - assets:
       - CHANGELOG.md
       - package.json
-      - ios/*/Info.plist",
-      - ios/*.xcodeproj/project.pbxproj",
+      - ios/**/Info.plist",
+      - ios/**/project.pbxproj",
       - android/app/build.gradle
       message: "chore(release): version ${nextRelease.version}\n\n${nextRelease.notes}"
   - "@semantic-release/github"
