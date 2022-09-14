@@ -1,132 +1,28 @@
-name: Publish iOS and Android App to App Store and Play Store
+name: Release
+
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - "v*"
-
-env: 
-  # common env :
-  DOTENV_B64: ${{ secrets.DOTENV_B64 }}
-  # android env :
-  GOOGLE_CLOUD_API_KEY_B64: ${{ secrets.GOOGLE_CLOUD_API_KEY_B64 }}
-  KEY_PROPERTIES_B64: ${{ secrets.KEY_PROPERTIES_B64 }}
-  KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
-  # ios env :
-  APPLE_API_KEY_SETTINGS_B64: ${{ secrets.APPLE_API_KEY_SETTINGS_B64 }}
-  DISTRIBUTION_P12_B64: ${{ secrets.DISTRIBUTION_P12_B64 }}
-  DISTRIBUTION_P12_PASSWORD: ${{ secrets.DISTRIBUTION_P12_PASSWORD }}
-  DISTRIBUTION_MOBILE_PROVISION_B64: ${{ secrets.DISTRIBUTION_MOBILE_PROVISION_B64 }}
-
+    branches: [master, alpha, beta, next]
 
 jobs:
-  release-ios:
-    name: Build and release Ios app
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-          cache: 'yarn'
-
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: "2.x"
-      
-      - name: Cache CocoaPods packages
-        uses: actions/cache@v3
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-
-      - name: Write Apple API Key config
-        shell: bash
-        run: |
-          echo "$APPLE_API_KEY_SETTINGS_B64" | base64 --decode > ios/fastlane/appleApiKey.json
-
-      - name: Write distribution.p12 file
-        shell: bash
-        run: |
-          echo "$DISTRIBUTION_P12_B64" | base64 --decode > ios/distribution.p12
-      
-      - name: Write distribution.mobileprovision file
-        shell: bash
-        run: |
-          echo "$DISTRIBUTION_MOBILE_PROVISION_B64" | base64 --decode > ios/distribution.mobileprovision
-
-      - name: Install Fastlane
-        run: cd ios && bundle install && cd ..
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Install pods
-        run: cd ios && pod install && cd ..
-
-      - name: Execute Fastlane command
-        run: cd ios && fastlane betaGithub certificate_password:$DISTRIBUTION_P12_PASSWORD
-
-  release-android:
-    name: Build and release Android app
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-          cache: 'yarn'
 
-      - name: Setup JDK 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: "zulu"
-          java-version: 11
-          
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        persist-credentials: false
 
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: "2.x"
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Write .env
-        shell: bash
-        run: |
-          echo "$DOTENV_B64" | base64 --decode > .env
-
-      - name: Write Google Cloud API Key
-        shell: bash
-        run: |
-          echo "$GOOGLE_CLOUD_API_KEY_B64" | base64 --decode > android/google-cloud-api-key.json
-
-      - name: Write key properties
-        shell: bash
-        run: |
-          echo "$KEY_PROPERTIES_B64" | base64 --decode > android/key.properties
-
-      - name: Write key store
-        shell: bash
-        run: |
-          mkdir android/app/keystore
-          echo "$KEYSTORE_B64" | base64 --decode > android/app/keystore/my-upload-key.jks
-
-      - name: Install Fastlane
-        run: cd android && bundle install && cd ..
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Execute Fastlane command
-        run: cd android && fastlane internal
+    - name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v2
+      with:
+        semantic_version: 17
+        extra_plugins: |
+          @semantic-release/changelog@5.0.1
+          @semantic-release/git@9.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.SOCIALGROOVYBOT_BOTO_PAT }}
