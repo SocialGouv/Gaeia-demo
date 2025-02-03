@@ -1,3 +1,16 @@
+## [1.0.13](https://github.com/SocialGouv/Gaeia-demo/compare/v1.0.12...v1.0.13) (2025-02-03)
+
+
+### Bug Fixes
+
+* **ci-cd:** use token-bureau ([55f4cb0](https://github.com/SocialGouv/Gaeia-demo/commit/55f4cb09f94b6a6d7cc4e047a7f1368daeda7560))
+* **ci-cd:** use token-bureau ([5c206cf](https://github.com/SocialGouv/Gaeia-demo/commit/5c206cf4f966aed36978f3dc6631be34eac77b62))
+* add dep ([1ca4baf](https://github.com/SocialGouv/Gaeia-demo/commit/1ca4baf890b4373a3feab2e0cadcd19809db92bb))
+* add release workflow ([af5a3c6](https://github.com/SocialGouv/Gaeia-demo/commit/af5a3c61175d2224463767a9c8858055007a4738))
+* release ([2b00403](https://github.com/SocialGouv/Gaeia-demo/commit/2b004037343ebfa51e4f5d1538003ffe81737770))
+* release ([8920ce8](https://github.com/SocialGouv/Gaeia-demo/commit/8920ce8439c0562b300b56fb969debf76455e131))
+* test ([b866904](https://github.com/SocialGouv/Gaeia-demo/commit/b866904f75c78db7b7be5d5cb396487f8e465ea5))
+
 ## [1.0.2](https://github.com/SocialGouv/Gaeia-demo/compare/v1.0.1...v1.0.2) (2022-09-14)
 
 
